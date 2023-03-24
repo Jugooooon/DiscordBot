@@ -6,6 +6,8 @@ from discord import ui
 import random
 import numpy
 import matplotlib.pyplot as plt
+from matplotlib import animation
+import os
 
 TOKEN = 'MTA4NDMyOTE2NTg3NDAwNDAxOA.GrK3Bb.NlAdLUecmA8UjzANjZ2ASWwT1zIpb72C9tOQCY'
 
@@ -46,13 +48,18 @@ async def roulette_command(interaction: discord.Interaction, text:str):
         N = random.randint(0, Roulette_Title_Len)
         await interaction.response.send_message(f'{Roulette_Title[N]}!!!')
 
-        
+        fig = plt.figure()
+        mov = []
         #円グラフ
         Value = 100 // Roulette_Title_Len
         Roulette_Value = [Value] * Roulette_Title_Len
         textprops={"weight":"bold", "color":"white", "size":"large"}
-        plt.pie(Roulette_Value, labels=Roulette_Title, labeldistance=0.3, textprops=textprops)
-        
+        img = plt.pie(Roulette_Value, labels=Roulette_Title, labeldistance=0.3, textprops=textprops)
+        plt.savefig('Roulette.png')
+        await interaction.channel.send(file=discord.File('D:\Works\Discordbot\DiscordBot\Roulette.png'))
+        os.remove('D:\Works\Discordbot\DiscordBot\Roulette.png')
+
+
     except IndexError:
         await interaction.response.send_message('もう一度やり直してください。')
 
