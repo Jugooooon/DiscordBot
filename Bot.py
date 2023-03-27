@@ -4,10 +4,12 @@ from discord.ext import commands
 from discord import ui
 
 import random
+import time
 import numpy
 import matplotlib.pyplot as plt
 from matplotlib import animation
 import os
+from PIL import Image
 
 TOKEN = 'MTA4NDMyOTE2NTg3NDAwNDAxOA.GrK3Bb.NlAdLUecmA8UjzANjZ2ASWwT1zIpb72C9tOQCY'
 
@@ -50,14 +52,31 @@ async def roulette_command(interaction: discord.Interaction, text:str):
 
         fig = plt.figure()
         mov = []
-        #円グラフ
+        #create PIE
         Value = 100 // Roulette_Title_Len
         Roulette_Value = [Value] * Roulette_Title_Len
         textprops={"weight":"bold", "color":"white", "size":"large"}
-        img = plt.pie(Roulette_Value, labels=Roulette_Title, labeldistance=0.3, textprops=textprops)
-        plt.savefig('Roulette.png')
-        await interaction.channel.send(file=discord.File('D:\Works\Discordbot\DiscordBot\Roulette.png'))
-        os.remove('D:\Works\Discordbot\DiscordBot\Roulette.png')
+        for i in range(100):
+            img = plt.pie(Roulette_Value, labels=Roulette_Title, labeldistance=0.3, textprops=textprops, counterclock=False, startangle=90 + (i * 10))
+            plt.savefig(f'D:\Works\Discordbot\DiscordBot\pics\Roulette{i}.png')
+            plt.clf()
+        
+        #Create Gif from imgs
+        gif = []
+        for i in range(100):
+            img = Image.open(f'D:\Works\Discordbot\DiscordBot\pics\Roulette{i}.png')
+            gif.append(img)
+
+        gif[0].save('Roulette.gif',save_all=True, append_images=gif[1:], optimize=True, duration=0, loop=0)
+        await interaction.channel.send(file=discord.File('D:\Works\Discordbot\DiscordBot\Roulette.gif'))
+        
+        #Delete All imgs
+        img.close()
+        
+        for i in range(100):
+            os.remove(f'D:\Works\Discordbot\DiscordBot\pics\Roulette{i}.png')
+        os.remove('D:\Works\Discordbot\DiscordBot\Roulette.gif')
+        
 
 
     except IndexError:
