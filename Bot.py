@@ -11,7 +11,7 @@ from matplotlib import animation
 import os
 from PIL import Image
 
-TOKEN = 'MTA4NDMyOTE2NTg3NDAwNDAxOA.GrK3Bb.NlAdLUecmA8UjzANjZ2ASWwT1zIpb72C9tOQCY'
+TOKEN = 'トークン'
 
 #初期設定
 intents = discord.Intents.default()
