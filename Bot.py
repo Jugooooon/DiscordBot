@@ -10,8 +10,9 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 import os
 from PIL import Image
+import BotToken
 
-TOKEN = 'トークン'
+TOKEN = BotToken.token
 
 #初期設定
 intents = discord.Intents.default()
