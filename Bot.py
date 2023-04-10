@@ -1,18 +1,16 @@
 import discord
 from discord import app_commands
-from discord.ext import commands
-from discord import ui
 
 import random
-import time
-import numpy
 import matplotlib.pyplot as plt
-from matplotlib import animation
 import os
 from PIL import Image
+
+import openai
 import BotToken
 
 TOKEN = BotToken.token
+openai.api_key = BotToken.OpenAI
 
 #初期設定
 intents = discord.Intents.default()
@@ -37,16 +35,24 @@ async def on_message(message: discord.Message):
     if message.content == 'hello':
         await message.reply("Hello!")
 
-@tree.command(name="test",description="テストコマンドです。")
-async def test_command(interaction: discord.Interaction,text:str):
-    await interaction.response.send_message(text,ephemeral=True)
+@tree.command(name="chat",description="OpenAI-davinci")
+async def chatgpt_command(interaction: discord.Interaction,text: str):
+
+    response = openai.Completion.create(
+        engine = "text-davinci-002",
+        prompt = f"ChatGPT:{text}",
+        max_tokens = 1024,
+    )
+
+    chatgpt_response = response.choices[0].text.strip()
+    await interaction.response.send_message(chatgpt_response)
 
 @tree.command(name="rou", description="ルーレット。\n入力例:A B C")
-async def roulette_command(interaction: discord.Interaction, text:str):
+async def roulette_command(interaction: discord.Interaction, text: str):
 
     try:
         Text = text.replace('　', ' ')
-        Roulette_Title = text.split()
+        Roulette_Title = Text.split()
         Roulette_Title_Len = len(Roulette_Title)
         N = random.randint(0, Roulette_Title_Len)
         await interaction.response.send_message(f'{Roulette_Title[N]}!!!')
@@ -82,6 +88,8 @@ async def roulette_command(interaction: discord.Interaction, text:str):
 
     except IndexError:
         await interaction.response.send_message('もう一度やり直してください。')
+    
+
 
 
 client.run(TOKEN)
