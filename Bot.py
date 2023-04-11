@@ -11,6 +11,7 @@ import BotToken
 
 TOKEN = BotToken.token
 openai.api_key = BotToken.OpenAI
+RiotAPIKey = BotToken.RiotAPI
 
 #初期設定
 intents = discord.Intents.default()
@@ -35,13 +36,34 @@ async def on_message(message: discord.Message):
     if message.content == 'hello':
         await message.reply("Hello!")
 
+#ChatGPT model gpt3
+@tree.command(name="gpt",description="OpenAI-ChatGPT")
+async def chatgpt_command(interaction: discord.Interaction, text: str):
+
+    response = openai.ChatCompletion.create(
+        model = "gpt-3.5-turbo",
+        messages = [
+            {"role":"system", "content":"語尾に「にゃ」をつけて話してください" }, #content以降に設定を付けられる
+            {"role":"user", "content":text },
+        ],
+        max_tokens = 1024,
+        n = 1,
+        temperature = 1,
+    )
+
+    chatgpt_response = response.choices[0].message.content
+    await interaction.response.send_message(chatgpt_response)
+
+#ChatGPT engine davinci
 @tree.command(name="chat",description="OpenAI-davinci")
-async def chatgpt_command(interaction: discord.Interaction,text: str):
+async def chatdvc_command(interaction: discord.Interaction, text: str):
 
     response = openai.Completion.create(
-        engine = "text-davinci-002",
-        prompt = f"ChatGPT:{text}",
+        engine = "text-davinci-003",
+        prompt = text,
         max_tokens = 1024,
+        n = 1,
+        temperature = 0.5,
     )
 
     chatgpt_response = response.choices[0].text.strip()
