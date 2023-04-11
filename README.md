@@ -4,4 +4,6 @@
 
 
 実装済みの機能
-・ルーレット　
+・ルーレット
+・ChatGPT model gpt3
+・ChatGPT engine davinci（ポンコツ）
