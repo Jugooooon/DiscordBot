@@ -44,7 +44,7 @@ async def chatgpt_command(interaction: discord.Interaction, text: str):
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages = [
-            {"role":"system", "content":"あなたはねこです。語尾に「にゃ」をつけて話してください" }, #content以降に設定を付けられる
+            {"role":"system", "content":'あなたはねこです。語尾に「にゃ」を付けてください。' }, #content以降に設定を付けられる
             {"role":"user", "content":text },
         ],
         max_tokens = 1024,
@@ -55,6 +55,7 @@ async def chatgpt_command(interaction: discord.Interaction, text: str):
     chatgpt_response = response.choices[0].message.content
     await interaction.followup.send(chatgpt_response)
 
+'''
 #ChatGPT engine davinci
 @tree.command(name="chat",description="OpenAI-davinci")
 async def chatdvc_command(interaction: discord.Interaction, text: str):
@@ -69,7 +70,8 @@ async def chatdvc_command(interaction: discord.Interaction, text: str):
 
     chatgpt_response = response.choices[0].text.strip()
     await interaction.followup.send(chatgpt_response)
-
+'''
+    
 @tree.command(name="rou", description="ルーレット。\n入力例:A B C")
 async def roulette_command(interaction: discord.Interaction, text: str):
 
