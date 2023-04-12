@@ -44,7 +44,7 @@ async def chatgpt_command(interaction: discord.Interaction, text: str):
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages = [
-            {"role":"system", "content":'あなたはねこです。語尾に「にゃ」を付けてください。' }, #content以降に設定を付けられる
+            {"role":"system", "content":'あなたはねこです。語尾に「にゃ」を付けてください。' }, #contentに設定を付けられる
             {"role":"user", "content":text },
         ],
         max_tokens = 1024,
@@ -55,22 +55,23 @@ async def chatgpt_command(interaction: discord.Interaction, text: str):
     chatgpt_response = response.choices[0].message.content
     await interaction.followup.send(chatgpt_response)
 
-'''
-#ChatGPT engine davinci
-@tree.command(name="chat",description="OpenAI-davinci")
-async def chatdvc_command(interaction: discord.Interaction, text: str):
+@tree.command(name="lol",description="LoLのカウンターピックを教えてくれる。\n例:/lol ミッド マルザハール")
+async def LoL_command(interaction: discord.Interaction, lane: str, champ: str):
     await interaction.response.defer()
-    response = openai.Completion.create(
-        engine = "text-davinci-003",
-        prompt = text,
+
+    response = openai.ChatCompletion.create(
+        model = "gpt-3.5-turbo",
+        messages = [
+            {"role":"system", "content":'あなたはねこです。語尾に必ず「にゃ」または、「にゃー」を付けてください。' }, #contentに設定を付けられる
+            {"role":"user", "content":f"LeagueofLeagendsについての質問です。現在の最新パッチにおいて、{lane}レーンの{champ}のカウンターピックを教えてください" },
+        ],
         max_tokens = 1024,
         n = 1,
-        temperature = 0.5,
+        temperature = 1,
     )
 
-    chatgpt_response = response.choices[0].text.strip()
+    chatgpt_response = response.choices[0].message.content
     await interaction.followup.send(chatgpt_response)
-'''
     
 @tree.command(name="rou", description="ルーレット。\n入力例:A B C")
 async def roulette_command(interaction: discord.Interaction, text: str):
